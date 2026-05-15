@@ -10,18 +10,18 @@ public class Java12_operator {
 		//그렇지 않으면 아이디와 비밀번호를 확인하세요 출력
 		
 		String id = "abcd";
-		String pw = "1234";
+		int pw = 1234;
 		
 		String cid;
-		String cpw;
+		int cpw;
 		
 		Scanner scanner = new Scanner(System.in);
 		System.out.print("아이디를 입력하세요 : ");
 		cid = scanner.next();
 		System.out.print("비밀번호를 입력하세요 : ");
-		cpw = scanner.next();
+		cpw = scanner.nextInt();
 		
-		if(id.equals(cid) && pw.equals(cpw)) {
+		if(id.equals(cid) && pw == cpw) { // 숫자 비교는 == 으로 비교한다
 			System.out.println("로그인 성공");
 		}else {
 			System.out.println("아이디와 비밀번호를 확인하세요");
