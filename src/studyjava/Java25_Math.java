@@ -60,6 +60,7 @@ public class Java25_Math {
 			default:
 				System.out.println("잘못된 입력입니다");
 		}
+		scanner.close();
 
 	}
 
