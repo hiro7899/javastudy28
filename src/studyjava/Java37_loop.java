@@ -29,7 +29,7 @@ public class Java37_loop {
 		for(int i = 1; i <= 10; i++) {
 			num = scanner.nextInt();
 			
-			if(num % 2 == 1) {
+			if(num % 2 != 0) {
 				oddSum += num;
 				oddCount++;
 			}else {

@@ -32,6 +32,8 @@ public class Java16_operator {
 		else {
 			System.out.println("배송비가 청구됩니다.");
 		}
+		
+		scanner.close();
 	}
 
 }

@@ -39,7 +39,7 @@ public class Java24_Math {
 			System.out.println("컴퓨터가 이겼습니다");
 		}
 		
-
+		scanner.close();
 	}
 
 }

@@ -12,26 +12,28 @@ public class Java35_loop {
 		int num = 0;
 		int cnt = 0;
 		
+		boolean isRunning = true;
+		
 		Scanner scanner = new Scanner(System.in);
 		
 		System.out.println("숫자 맞추기 게임");
 		
-		for(;;) {
+		while(isRunning) {
 			System.out.print("숫자를 입력(1-100): ");
 			num = scanner.nextInt();
-			cnt++;
-			
 			if(num > 100 || num < 1) {
 				System.out.println("잘못된 숫자를 입력했습니다.(1~ 100) 범위 내 숫자를 입력하세요");
 				continue;
 			}
+			
+			cnt++;
 			
 			if(num < com) {
 				System.out.println("업");
 			}else if(num > com) {
 				System.out.println("다운");
 			}else {
-				break;
+				isRunning = false;
 			}
 		}
 		

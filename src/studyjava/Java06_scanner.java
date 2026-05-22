@@ -74,6 +74,8 @@ public class Java06_scanner {
 		System.out.println("번호\t이름\t국어\t영어\t수학\t총점\t평균\t학점\t합격여부");
 		System.out.println(num + "\t" + name + "\t" + kor + "\t" + eng + "\t" + math 
 				+ "\t" + tot + "\t" + df.format(avg) + "\t" + grade + "\t" + result);
+		
+		sc.close();
 	}
 
 }

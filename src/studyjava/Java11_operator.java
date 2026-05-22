@@ -23,5 +23,7 @@ public class Java11_operator {
 		}else {
 			System.out.println("우리친구 더 크면 타요");
 		}
+		
+		scanner.close();
 	}
 }

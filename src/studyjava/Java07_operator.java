@@ -3,6 +3,7 @@ package studyjava;
 import java.util.Scanner;
 
 public class Java07_operator {
+	@SuppressWarnings("unused")
 	public static void main(String[] args) {
 		//연산자(Operator)
 		//연산자란 데이터를 계산하거나 비교하거나 논리적으로 판단할때 사용하는 기호이다
@@ -71,5 +72,6 @@ public class Java07_operator {
 		tot = price * count - discount;
 		System.out.println("최종금액 : "+ tot);
 		
+		scanner.close();
 	}
 }

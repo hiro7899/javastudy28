@@ -1,6 +1,7 @@
 package studyjava;
 
 public class Java02_print {
+	@SuppressWarnings("unused")
 	public static void main(String[] args) {
 		System.out.println("성적표");
 		System.out.println("번호\t이름\t국어\t영어\t수학\t총점\t평균\t학점\t등수");

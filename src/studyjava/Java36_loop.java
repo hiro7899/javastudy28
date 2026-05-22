@@ -18,7 +18,7 @@ public class Java36_loop {
 		int count = 0; //실패 횟수
 		int failCount = 3; //실패 제한 횟수
 		
-		for(;;) {
+		while(count < failCount) {
 			System.out.print("아이디를 입력하세요: ");
 			isid = scanner.next();
 			System.out.print("비밀번호를 입력하세요: ");

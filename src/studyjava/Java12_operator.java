@@ -28,6 +28,7 @@ public class Java12_operator {
 		}
 		
 		
+		scanner.close();
 	}
 
 }
