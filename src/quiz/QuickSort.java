@@ -11,30 +11,16 @@ public class QuickSort {
 		//피벗을 정한 뒤 앞에서 부터 낮은 숫자 뒤에서 부터 높은 숫자를 찾음
 		
 		for(int i = 0; i < arr.length; i++) {
-			int pivot = i;
+			int pivot = arr[i];
 			
-			for(int j = pivot; j < arr.length; j++) {
-				if(arr[pivot] > arr[j]) {
-					int temp = arr[pivot];
-					arr[pivot] = arr[j];
-					arr[j] = temp;
-					
-					break;
-				}
-			}
-			
-			for(int j = arr.length -1; j > pivot; j--) {
-				if(arr[pivot] < arr[j]) {
-					int temp = arr[pivot];
-					arr[pivot] = arr[j];
-					arr[j] = temp;
-					
-					break;
-				}
+			int j = 0;
+			while(pivot > arr[j]) {
+				j++;
 			}
 		}
-		System.out.println(Arrays.toString(arr));
 		
+		
+		System.out.println(Arrays.toString(arr));
 	}
 
 }
