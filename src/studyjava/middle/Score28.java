@@ -44,17 +44,35 @@ public class Score28 {
 	
 	public void calc() {
 		this.tot = this.kor + this.eng + this.mat;
-		ave = tot / 3;
+		ave = (double)tot / 3;
+		ave = Math.round(ave * 100.0) / 100.0;
 		
 		// 현재 자기 자신의 객체일때는 this 생략 가능하다
 	}
 	
 	public void grade() {
-		if(ave >= 90) {	this.grade = 'A';}
-		else if(ave >= 80) { this.grade = 'B';}
-		else if(ave >= 70) { this.grade = 'C';}
-		else if(ave >= 60) { this.grade = 'D';}
-		else { this.grade = 'F';}
+		if(ave >= 90) this.grade = 'A';
+		else if(ave >= 80) this.grade = 'B';
+		else if(ave >= 70) this.grade = 'C';
+		else if(ave >= 60) this.grade = 'D';
+		else this.grade = 'F';
 	}
 	
+	public void scoreTitle() {
+		System.out.println("성적표");
+		System.out.println("번호\t이름\t국어\t영어\t수학\t총점\t평균\t학점");
+	}
+	
+	public void scorePrint() {
+		System.out.print(bno+ "\t");
+		System.out.print(name+ "\t");
+		System.out.print(kor+ "\t");
+		System.out.print(eng+ "\t");
+		System.out.print(mat+ "\t");
+		System.out.print(tot+ "\t");
+		System.out.print(ave+ "\t");
+		System.out.print(grade);
+		System.out.println();
+		
+	}
 }
