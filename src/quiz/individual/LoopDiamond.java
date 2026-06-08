@@ -1,4 +1,4 @@
-package quiz;
+package quiz.individual;
 
 public class LoopDiamond {
 

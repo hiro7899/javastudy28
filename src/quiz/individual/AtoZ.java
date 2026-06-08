@@ -1,4 +1,4 @@
-package quiz;
+package quiz.individual;
 
 public class AtoZ {
 	//A~ Z 까지 출력하는 반복문

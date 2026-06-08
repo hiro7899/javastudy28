@@ -1,4 +1,4 @@
-package quiz;
+package quiz.individual;
 
 public class EvenNumberQuiz {
     public static void main(String[] args) {
