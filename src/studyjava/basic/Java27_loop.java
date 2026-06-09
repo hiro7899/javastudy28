@@ -10,7 +10,7 @@ public class Java27_loop {
 		// 반복문의 종류
 		// for : 반복횟수가 정해진 경우 사용
 		// while : 조건이 참 인동안 반복
-		// do-while : 최소 1번은ㄴ 무조건 실행 후 반복
+		// do-while : 최소 1번은 무조건 실행 후 반복
 		// 중첩 for : for문에 for문
 		// break : 반복문 즉시 종료
 		// continue : 현재 반복 건너뛰고 다음으로

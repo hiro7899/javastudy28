@@ -19,6 +19,7 @@ public class Java05_main {
 		
 		j1.printInfo();
 		j2.printInfo();
+		
 	}
 
 }
