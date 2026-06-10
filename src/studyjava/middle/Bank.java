@@ -8,6 +8,10 @@ public class Bank {
 	String owner; //예금주
 	int balance; //잔액
 
+	public Bank(){
+		
+	}
+	
 	public Bank(String ano, String owner, int balance) {
 		this.ano = ano;
 		this.owner = owner;
