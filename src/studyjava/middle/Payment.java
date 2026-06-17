@@ -42,23 +42,39 @@ class KakaoPay extends Payment{
 	int balance;//충전금액
 	
 	
-	KakaoPay(String ownerName) {
+	KakaoPay(String ownerName, String phoneNum, int balance) {
 		super(ownerName);
+		this.phoneNum = phoneNum;
+		this.balance = balance;
+		this.point = 0;
 	}
 
 	@Override
 	boolean pay(int amount) {
-		return false;
+
+		if(amount > balance) {
+			System.out.println("잔액부족 현재: " + String.format("%,d", balance) + "원");
+			return false;
+		}
+		
+		balance -= amount;
+		totalPaid += amount;
+		point += amount / 100;
+		
+		printReceipt(amount);
+		System.out.println("포인트 " + amount/100 + "점 적립");
+		
+		return true;
 	}
 
 	@Override
 	String getPaymentType() {
-		return null;
+		return "카카오페이 (" + phoneNum + ")";
 	}
 
 	@Override
 	int getAvailable() {
-		return 0;
+		return balance;
 	}
 	
 }
@@ -67,24 +83,33 @@ class KakaoPay extends Payment{
 class DebitCard extends Payment {
 	int balance; //잔액 (체크카드 필요)
 	
-	DebitCard(String ownerName) {
+	DebitCard(String ownerName, int balance) {
 		super(ownerName);
+		this.balance = balance;
 	}
 
-
+	//추상메서드 구현 - 체크카드 결제
 	@Override
 	boolean pay(int amount) {
-		return false;
+		if(amount > balance) {
+			System.out.println("잔액부족 현재: " + String.format("%,d", balance) + "원");
+			return false;
+		}
+		
+		balance -= amount;
+		totalPaid += amount;
+		printReceipt(amount);
+		return true;
 	}
 
 	@Override
 	String getPaymentType() {
-		return null;
+		return "체크카드";
 	}
 
 	@Override
 	int getAvailable() {
-		return 0;
+		return balance;
 	}
 }
 
