@@ -29,11 +29,11 @@ public class Java16_Generic {
 		
 		//boolean -> Boolean
 		//byte -> Byte
-		//char -> Char
+		//char -> Character
 		//short -> Short
 		//int -> Integer
 		//long -> Long
-		//float -> Floats
+		//float -> Float
 		//double -> Double
 		
 		//제네릭(Generic)이란?
