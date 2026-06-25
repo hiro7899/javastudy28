@@ -36,8 +36,8 @@ public class JslScoreMethod {
 		
 		System.out.println("=============학생부");
 		System.out.printf("%-6s%-6s%-6s%n", "학번", "이름", "점수");
-		for(JslScore score : jsl) {
-			System.out.printf("%-6d%-6s\t%d점%n", score.getIdx(), score.getName(), score.getScore());
+		for(JslScore stu : jsl) {
+			System.out.printf("%-6d%-6s\t%d점%n", stu.getIdx(), stu.getName(), stu.getScore());
 			
 		}
 	}
@@ -54,9 +54,9 @@ public class JslScoreMethod {
 		
 		boolean found = false;
 		
-		for(JslScore score : jsl) {
-			if (score.getIdx() == idx) {
-				System.out.printf("%-6d%-6s\t%d점%n", score.getIdx(), score.getName(), score.getScore());
+		for(JslScore stu : jsl) {
+			if (stu.getIdx() == idx) {
+				System.out.printf("%-6d%-6s\t%d점%n", stu.getIdx(), stu.getName(), stu.getScore());
 				found = true;
 				break;
 			}
@@ -81,15 +81,15 @@ public class JslScoreMethod {
 		
 		JslScore target = null;
 		
-		for(JslScore score : jsl) {
-			if (score.getIdx() == idx) {
-				target = score;
+		for(JslScore stu : jsl) {
+			if (stu.getIdx() == idx) {
+				target = stu;
 				break;
 			}
 		}
 		
 		if (target != null) {
-            jsl.remove(target); // 객체 자체를 넘겨서 삭제 (가장 안전함)
+            jsl.remove(target);
             System.out.println("성공적으로 삭제되었습니다.");
         } else {
             System.out.println("해당 학번의 학생이 없어요");
