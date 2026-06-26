@@ -32,6 +32,7 @@ public class JslScoreMethod {
 		//저장된 모든 객체를 반복하면서 출력
 		if(jsl.isEmpty()) {
 			System.out.println("등록된 학생이 없습니다");
+			return;
 		}
 		
 		System.out.println("=============학생부");
@@ -63,7 +64,7 @@ public class JslScoreMethod {
 		}
 		
 		if (!found) {
-			System.out.println("해당학생이 없어요");
+			System.out.println(idx + "해당학생이 없어요");
 		}
 		
 	}
