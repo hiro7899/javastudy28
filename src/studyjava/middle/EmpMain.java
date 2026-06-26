@@ -16,34 +16,11 @@ public class EmpMain {
 		ArrayList<Emp> list = new ArrayList<Emp>();
 		//emp 객체를 저장하기 위한 가변배열 객체를 생성한다
 		
-		Emp emp1 = new Emp();
-		emp1.setIdx(1);
-		emp1.setName("홍길동");
-		emp1.setDept("개발팀");
-		emp1.setSalary(3500000);
-		emp1.setYears(5);
+		EmpMethod em = new EmpMethod();
 		
-		list.add(emp1);
+		em.insert(list);
 		
-		//list.add(new Emp(2, "김길동", "영업팀", 3200000, 3));
 		
-		Emp emp2 = new Emp();
-		emp2.setIdx(2);
-		emp2.setName("김길동");
-		emp2.setDept("영업팀");
-		emp2.setSalary(3200000);
-		emp2.setYears(3);
-		
-		list.add(emp2);
-		
-		Emp emp3 = new Emp();
-		emp3.setIdx(3);
-		emp3.setName("이길동");
-		emp3.setDept("개발팀");
-		emp3.setSalary(4200000);
-		emp3.setYears(8);
-		
-		list.add(emp3);
 		
 		//전체 직원 출력
 		//가변 배열에 저장된 객체를 한개씩 자동으로 가져와서
