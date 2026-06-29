@@ -2,6 +2,7 @@ package studyjava.middle;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.Scanner;
 
 public class EmpMain {
 
@@ -17,6 +18,30 @@ public class EmpMain {
 		//emp 객체를 저장하기 위한 가변배열 객체를 생성한다
 		
 		EmpMethod em = new EmpMethod();
+		
+		boolean menu = true;
+		
+		Scanner scanner = new Scanner(System.in);
+		
+		while(menu) {
+			int sel = scanner.nextInt();
+			if(sel == 1) {
+				em.insert(list);
+			}else if(sel == 2) {
+				em.empAllPrint();
+			}else if(sel == 3) {
+				em.empSalaryAsc();
+			}else if(sel == 4) {
+				em.empSalaryDesc();
+			}else if(sel == 5) {
+				em.empNameAsc();
+			}else if(sel == 6) {
+				em.empNameDesc();
+			}else {
+				
+			}
+			
+		}
 		
 		em.insert(list);
 		
@@ -54,7 +79,7 @@ public class EmpMain {
 		
 		System.out.println("=====내림차순=====");
 		list.sort((e1, e2) -> e2.getSalary() - e1.getSalary());
-		for(int i = 0; i < 3; i ++) {
+		for(int i = 0; i < list.size(); i ++) {
 			System.out.println((i+1) + ", " + list.get(i));
 		}
 		
@@ -104,6 +129,8 @@ public class EmpMain {
 		//메서드를 호출할때 더 줄여 쓰기 위해 나온 문법이다
 		
 		list.sort(Comparator.comparingInt(Emp :: getSalary));
+		
+		scanner.close();
 	}
 
 }
