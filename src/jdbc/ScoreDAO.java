@@ -3,6 +3,7 @@ package jdbc;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 
 public class ScoreDAO {
 	
@@ -26,6 +27,143 @@ public class ScoreDAO {
 			pstmt.executeUpdate(); //sql 실행	
 			
 		} catch (Exception e) {
+//			e.printStackTrace();
+			System.out.println("이미 존재하는 학번입니다.");
+		} finally {
+			if (pstmt != null) try { pstmt.close(); } catch (Exception e) { e.printStackTrace(); }
+	        if (conn != null) try { conn.close(); } catch (Exception e) { e.printStackTrace(); }
+		}
+		
+	}
+	
+	public int countIdx() {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		int maxidx = 0;
+		
+		String sql = "SELECT max(idx) + 1 as maxidx FROM score";
+		
+		try {
+			conn = DBmanager.getInstance();
+			pstmt = conn.prepareStatement(sql);
+			
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+//				maxidx = rs.getInt("maxidx");
+				maxidx = rs.getInt(1);			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return maxidx;
+	}
+	
+	
+	//전체 검색
+	public ArrayList<ScoreDTO> getScore() {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		ArrayList<ScoreDTO> dtoList = new ArrayList<ScoreDTO>();
+		
+		String sql = "SELECT * FROM score";
+		
+		try {
+			conn = DBmanager.getInstance();
+			pstmt = conn.prepareStatement(sql);
+			
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				ScoreDTO dto = new ScoreDTO();
+				
+				dto.setIdx(rs.getInt("idx"));
+				dto.setName(rs.getString("name"));
+				dto.setKor(rs.getInt("kor"));
+				dto.setEng(rs.getInt("eng"));
+				dto.setMat(rs.getInt("mat"));
+				
+				dtoList.add(dto);
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (rs != null) try { rs.close(); } catch (Exception e) { e.printStackTrace(); }
+			if (pstmt != null) try { pstmt.close(); } catch (Exception e) { e.printStackTrace(); }
+	        if (conn != null) try { conn.close(); } catch (Exception e) { e.printStackTrace(); }
+		}
+		return dtoList;
+	}
+	
+	//조건 검색
+	public ScoreDTO getCondition(int idx) {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		ScoreDTO dto = null; // (따로 한거)return 을 모든 코드 실행 후 마지막에 실행하기 위해 빈 껍데기로 선언했음.
+		String sql = "SELECT * FROM score WHERE idx = ?";
+		
+		try {
+			conn = DBmanager.getInstance();
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setInt(1, idx);
+			
+			rs = pstmt.executeQuery();	
+			
+			if(rs.next()) { //검색된 결과가 있으면 true 반환 // rs.next()는 기본적으로 빈공간에 커서가 놓여져 있어서 반드시 호출해야함
+				//if(rs.next())를 사용하는 것이 하나만 출력하는 것이라면 확실하게 보인다.
+				//rs.next()를 하면 값이 들어있지 않을 경우 오류를 뿜어냄.
+				//rs.next() : 검색된 결과가 있으면 첫번째 레코드 (튜플)로 이동하고
+				//true 를 리턴해준다
+				
+				dto = new ScoreDTO();//객체 형태로 데이터를 주고 받기 위해 dto 객체를 생성한다
+				dto.setIdx(rs.getInt("idx"));
+				//rs가 가리키는 레코드의 idx 컬럼에 검색된 값을 dto idx 변수에 저장
+				dto.setName(rs.getString("name"));
+				dto.setKor(rs.getInt("kor"));
+				dto.setEng(rs.getInt("eng"));
+				dto.setMat(rs.getInt("mat"));
+			}else {
+				System.out.println("검색된 결과가 없습니다");
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (rs != null) try { rs.close(); } catch (Exception e) { e.printStackTrace(); }
+			if (pstmt != null) try { pstmt.close(); } catch (Exception e) { e.printStackTrace(); }
+	        if (conn != null) try { conn.close(); } catch (Exception e) { e.printStackTrace(); }
+		}
+		return dto;
+	}
+	
+	public void getUpdate(ScoreDTO dto) {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		
+		String sql = "UPDATE score SET kor = ?, eng = ?, mat = ? WHERE idx = ?";
+		
+		try {
+			conn = DBmanager.getInstance();
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setInt(1, dto.getKor());
+			pstmt.setInt(2, dto.getEng());
+			pstmt.setInt(3, dto.getMat());
+			pstmt.setInt(4, dto.getIdx());
+			
+			pstmt.executeUpdate();
+			
+		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
 			if (pstmt != null) try { pstmt.close(); } catch (Exception e) { e.printStackTrace(); }
@@ -34,33 +172,26 @@ public class ScoreDAO {
 		
 	}
 	
-	
-	//전체 검색
-	public void getScore() {
-		Connection conn = null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		
-	}
-	
-	//조건 검색
-	public void getCondition() {
-		Connection conn = null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		
-		
-	}
-	
-	public void getUpdate() {
+	public void getDelete(int idx) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		
-	}
-	
-	public void getDelete() {
-		Connection conn = null;
-		PreparedStatement pstmt = null;
+		String sql = "DELETE FROM score WHERE idx = ?";
+		
+		try {
+			conn = DBmanager.getInstance();
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setInt(1, idx);
+			
+			pstmt.executeUpdate();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (pstmt != null) try { pstmt.close(); } catch (Exception e) { e.printStackTrace(); }
+	        if (conn != null) try { conn.close(); } catch (Exception e) { e.printStackTrace(); }
+		}
 		
 	}
 	
