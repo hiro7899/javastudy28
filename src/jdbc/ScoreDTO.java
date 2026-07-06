@@ -10,6 +10,14 @@ public class ScoreDTO {
 	private int eng;
 	private int mat;
 	
+	private int tkor;
+	private int teng;
+	private int tmat;
+	
+	private double akor;
+	private double aeng;
+	private double amat;
+	
 	public int getIdx() {
 		return idx;
 	}
@@ -50,4 +58,56 @@ public class ScoreDTO {
 		this.mat = mat;
 	}
 	
+	public int getTkor() {
+		return tkor;
+	}
+
+	public void setTkor(int tkor) {
+		this.tkor = tkor;
+	}
+
+	public int getTeng() {
+		return teng;
+	}
+
+	public void setTeng(int teng) {
+		this.teng = teng;
+	}
+
+	public int getTmat() {
+		return tmat;
+	}
+
+	public void setTmat(int tmat) {
+		this.tmat = tmat;
+	}
+	
+	public double getAkor() {
+		return akor;
+	}
+
+	public void setAkor(int akor) {
+		this.akor = akor;
+	}
+
+	public double getAeng() {
+		return aeng;
+	}
+
+	public void setAeng(int aeng) {
+		this.aeng = aeng;
+	}
+
+	public double getAmat() {
+		return amat;
+	}
+
+	public void setAmat(int amat) {
+		this.amat = amat;
+	}
+
+	@Override
+	public String toString() {
+		return String.format("%d\t%s\t%d\t%d\t%d", this.idx, this.name, this.kor, this.eng, this.mat);
+	}
 }

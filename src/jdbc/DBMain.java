@@ -1,5 +1,6 @@
 package jdbc;
 
+import java.util.List;
 import java.util.Scanner;
 
 public class DBMain {
@@ -13,7 +14,7 @@ public class DBMain {
 		ScoreDAO dao = new ScoreDAO();
 		
 		while(flag) {
-			System.out.print("[1]입력[2]출력[3]전체 출력[4]수정[5]삭제[0]종료 : ");
+			System.out.print("[1]입력[2]출력[3]전체 출력[4]국어점수 최대값[5]수정[6]삭제[0]종료 : ");
 			int menu = scanner.nextInt();
 			
 			if(menu == 1) {
@@ -59,23 +60,39 @@ public class DBMain {
 				
 				
 			}else if(menu == 3) {
+				System.out.println("전체 인원수 : " + dao.getCount());
 				System.out.println("========전체출력=========");
-				System.out.println("학번\t이름\t국어\t영어\t수학\t총점\t평균");
+				System.out.println("학번\t이름\t국어\t영어\t수학\t총점\t평균\t학점");
 				
-				for(ScoreDTO dto : dao.getScore()) {
-					System.out.print(dto.getIdx() + "\t");
-					System.out.print(dto.getName() + "\t");
-					System.out.print(dto.getKor() + "\t");
-					System.out.print(dto.getEng() + "\t");
-					System.out.print(dto.getMat() + "\t");
-					
-					int tot = dto.getKor() + dto.getEng() + dto.getMat();
-					double ave = (double)tot / 3;
-					System.out.print(tot + "\t");
-					System.out.println(ave);
-				}
+				List<ScoreDTO> list = dao.getScore();
+	            for(ScoreDTO dto : list) {
+	            	int tot = dto.getKor() + dto.getEng() + dto.getMat();
+	            	double ave = (double)tot / 3;
+	            	ave = Math.round(ave * 100)/100.0; 
+	            	String grade = "";
+	            	
+	            	if(ave >= 90) {
+	            		grade = "A";
+	            	} else if(ave >= 80) {
+	            		grade = "B";
+	            	} else if(ave >= 70) {
+	            		grade = "C";
+	            	} else if(ave >= 60) {
+	            		grade = "D";
+	            	} else {
+	            		grade = "F";
+	            	}
+	            	
+	            	System.out.println(dto + "\t" + tot + "\t" + ave + "\t" + grade);
+	            }
+	            System.out.println("=======================");
+	            ScoreDTO dto = null;
+	            dto = dao.setTotal();
+	            System.out.println("전체총점 : "+dto.getTkor()+", "+dto.getTeng()+", "+dto.getTmat());
+	            dto = dao.setAverage();
+	            System.out.println("전체평균 : "+dto.getAkor()+", "+dto.getAeng()+", "+dto.getAmat());
 				
-			}else if(menu == 4) {
+			}else if(menu == 5) {
 				System.out.print("수정할 학번 입력: ");
 			    int idx = scanner.nextInt();
 			    
@@ -109,7 +126,7 @@ public class DBMain {
 			    dao.getUpdate(dto);
 			    System.out.println("수정 완료!");
 				
-			}else if(menu == 5) {
+			}else if(menu == 6) {
 				System.out.print("삭제하실 학번 : ");
 				int idx = scanner.nextInt();
 				

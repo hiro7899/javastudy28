@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.List;
 
 public class ScoreDAO {
 	
@@ -41,9 +42,9 @@ public class ScoreDAO {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		
-		int maxidx = 0;
+		int maxIdx = 0;
 		
-		String sql = "SELECT max(idx) + 1 as maxidx FROM score";
+		String sql = "SELECT MAX(idx) + 1 as maxidx FROM score";
 		
 		try {
 			conn = DBmanager.getInstance();
@@ -52,26 +53,27 @@ public class ScoreDAO {
 			rs = pstmt.executeQuery();
 			
 			if(rs.next()) {
-//				maxidx = rs.getInt("maxidx");
-				maxidx = rs.getInt(1);			}
+//				maxIdx = rs.getInt("maxidx");
+				maxIdx = rs.getInt(1);	
+			}
 			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		
-		return maxidx;
+		return maxIdx;
 	}
 	
 	
 	//전체 검색
-	public ArrayList<ScoreDTO> getScore() {
+	public List<ScoreDTO> getScore() {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		
-		ArrayList<ScoreDTO> dtoList = new ArrayList<ScoreDTO>();
+		List<ScoreDTO> list = new ArrayList<ScoreDTO>();
 		
-		String sql = "SELECT * FROM score";
+		String sql = "SELECT * FROM score ORDER BY name DESC";
 		
 		try {
 			conn = DBmanager.getInstance();
@@ -88,7 +90,7 @@ public class ScoreDAO {
 				dto.setEng(rs.getInt("eng"));
 				dto.setMat(rs.getInt("mat"));
 				
-				dtoList.add(dto);
+				list.add(dto);
 			}
 			
 		} catch (Exception e) {
@@ -98,7 +100,63 @@ public class ScoreDAO {
 			if (pstmt != null) try { pstmt.close(); } catch (Exception e) { e.printStackTrace(); }
 	        if (conn != null) try { conn.close(); } catch (Exception e) { e.printStackTrace(); }
 		}
-		return dtoList;
+		return list;
+	}
+	
+	public int getCount() {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		String sql = "SELECT COUNT(*) as count FROM score";
+		
+		int count = 0;
+		
+		try {
+			conn = DBmanager.getInstance();
+			pstmt = conn.prepareStatement(sql);
+			
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				count = rs.getInt(1);
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return count;
+	}
+	
+	public List<ScoreDTO> getMaxKor() {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		List<ScoreDTO> list = new ArrayList<ScoreDTO>();
+		
+		String sql = "SELECT idx, name FROM score "
+				+ "WHERE kor = (SELECT MAX(kor) FROM score)";
+		
+		try {
+			conn = DBmanager.getInstance();
+			pstmt = conn.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				ScoreDTO dto = new ScoreDTO();
+				
+				dto.setIdx(rs.getInt("idx"));
+				dto.setName(rs.getString("name"));
+				
+				list.add(dto);
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return list;
 	}
 	
 	//조건 검색
@@ -142,6 +200,62 @@ public class ScoreDAO {
 			if (rs != null) try { rs.close(); } catch (Exception e) { e.printStackTrace(); }
 			if (pstmt != null) try { pstmt.close(); } catch (Exception e) { e.printStackTrace(); }
 	        if (conn != null) try { conn.close(); } catch (Exception e) { e.printStackTrace(); }
+		}
+		return dto;
+	}
+	
+	public ScoreDTO setTotal() {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		String sql = "SELECT SUM(kor) as tkor, SUM(eng) as teng, SUM(mat) as tmat "
+				+ "FROM score";
+		
+		ScoreDTO dto = null;
+		try {
+			conn = DBmanager.getInstance();
+			pstmt = conn.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				dto = new ScoreDTO();
+				
+				dto.setTkor(rs.getInt("tkor"));
+				dto.setTeng(rs.getInt("teng"));
+				dto.setTmat(rs.getInt("tmat"));
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return dto;
+	}
+	
+	public ScoreDTO setAverage() {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		String sql = "SELECT AVG(kor) as akor, AVG(eng) as aeng, AVG(mat) as amat "
+				+ "FROM score";
+		
+		ScoreDTO dto = null;
+		try {
+			conn = DBmanager.getInstance();
+			pstmt = conn.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				dto = new ScoreDTO();
+				
+				dto.setAkor(rs.getInt("akor"));
+				dto.setAeng(rs.getInt("aeng"));
+				dto.setAmat(rs.getInt("amat"));
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 		return dto;
 	}
