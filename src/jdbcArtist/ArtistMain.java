@@ -52,9 +52,9 @@ public class ArtistMain {
 				List<ArtistDTO> artists = dao.select();
 				
 				for(ArtistDTO artist : artists) {
+					dao.formatSelect(artist);
 					System.out.println(artist);
 				}
-				
 				
 			}else if(menu == 0) {
 				flag = false;

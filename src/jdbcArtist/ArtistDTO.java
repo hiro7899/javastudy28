@@ -58,25 +58,7 @@ public class ArtistDTO {
 	
 	@Override
 	public String toString() {
-		if(artistGender.equals("M")) {
-			artistGender = "남자";
-		}else {
-			artistGender = "여자";
-		}
 		
-		if(talent.equals("1")) {
-			talent = "댄스";
-		}else if (talent.equals("2")) {
-			talent = "랩";
-		}else {
-			talent = "노래";
-		}
-		
-		String year = artistBirth.substring(0, 4) + "년";
-		String month = artistBirth.substring(4, 6) + "월";
-		String day = artistBirth.substring(6, 8) + "일";
-		
-		artistBirth = year + month + day;
 		
 		return artistId + "\t" + artistName + "\t" + artistGender + "\t" + artistBirth + "\t" + talent + "\t" + agency;
 	}

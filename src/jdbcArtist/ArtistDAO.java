@@ -39,6 +39,28 @@ public class ArtistDAO {
 		}
 	}
 	
+	public void formatSelect(ArtistDTO dto) {
+		if(dto.getArtistGender().equals("M")) {
+			dto.setArtistGender("남자");
+		}else {
+			dto.setArtistGender("여자");
+		}
+		
+		if(dto.getTalent().equals("1")) {
+			dto.setTalent("댄스");
+		}else if (dto.getTalent().equals("2")) {
+			dto.setTalent("랩");
+		}else {
+			dto.setTalent("노래");
+		}
+		
+		String year = dto.getArtistBirth().substring(0, 4) + "년";
+		String month = dto.getArtistBirth().substring(4, 6) + "월";
+		String day = dto.getArtistBirth().substring(6, 8) + "일";
+		
+		dto.setArtistBirth(year + month + day);
+	}
+	
 	public List<ArtistDTO> select(){
 		Connection conn = null;
 		PreparedStatement pstmt = null;
