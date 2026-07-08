@@ -1,12 +1,166 @@
-package jdbc;
+package jdbcScore;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 public class ScoreDAO {
+	
+	Scanner scanner = new Scanner(System.in);
+	
+	//화면 입력
+	public void viewInsert() {
+//		System.out.print("학번 : ");
+//		int idx = countIdx();
+		
+		System.out.print("이름 : ");
+		String name = scanner.next();
+				
+		System.out.print("국어 : ");
+		int kor = scanner.nextInt();
+				
+		System.out.print("영어 : ");
+		int eng = scanner.nextInt();
+				
+		System.out.print("수학 : ");
+		int mat = scanner.nextInt();
+		
+		ScoreDTO dto = new ScoreDTO();
+		
+		dto.setIdx(countIdx());
+		dto.setName(name);
+		dto.setKor(kor);
+		dto.setEng(eng);
+		dto.setMat(mat);
+		
+		setInsert(dto);
+	}
+	
+	public void findByIdx() {
+		System.out.print("학번 입력: ");
+		int idx = scanner.nextInt();
+		
+		ScoreDTO dto = getCondition(idx);
+		
+		System.out.print(dto.getIdx()+ " " + dto.getName() + " " 
+				+ dto.getKor() + " " + dto.getEng() + " " + dto.getMat());
+		
+		int tot = dto.getKor() + dto.getEng() + dto.getMat();
+		double ave = (double)tot / 3;
+		
+		System.out.print(" 총점 : " + tot + " ");
+		System.out.println("평균 : " + ave);
+	}
+	
+	public void printAll() {
+		System.out.println("전체 인원수 : " + getCount());
+		System.out.println("========전체출력=========");
+		System.out.println("학번\t이름\t국어\t영어\t수학\t총점\t평균\t학점");
+		
+		List<ScoreDTO> list = getScore();
+        for(ScoreDTO dto : list) {
+        	int tot = dto.getKor() + dto.getEng() + dto.getMat();
+        	double ave = (double)tot / 3;
+        	ave = Math.round(ave * 100)/100.0; 
+        	String grade = "";
+        	
+        	if(ave >= 90) {
+        		grade = "A";
+        	} else if(ave >= 80) {
+        		grade = "B";
+        	} else if(ave >= 70) {
+        		grade = "C";
+        	} else if(ave >= 60) {
+        		grade = "D";
+        	} else {
+        		grade = "F";
+        	}
+        	
+        	System.out.println(dto + "\t" + tot + "\t" + ave + "\t" + grade);
+        }
+        System.out.println("=======================");
+        ScoreDTO dto = null;
+        dto = setTotal();
+        System.out.println("전체총점 : "+dto.getTkor()+", "+dto.getTeng()+", "+dto.getTmat());
+        dto = setAverage();
+        System.out.println("전체평균 : "+dto.getAkor()+", "+dto.getAeng()+", "+dto.getAmat());
+	}
+	
+	public void printMaxIdxName() {
+		List<ScoreDTO> list = getMaxKor();
+		for(ScoreDTO dto : list) {
+			System.out.println(dto.getIdx() + ", ");
+			System.out.println(dto.getName());
+		}
+	}
+	
+	public void printTotAvg() {
+		System.out.println("전체 인원수 : " + getCount());
+		System.out.println("========전체출력=========");
+		System.out.println("학번\t이름\t국어\t영어\t수학\t총점\t평균\t학점");
+		DecimalFormat df = new DecimalFormat("#.00");
+		List<ScoreDTO> list = getOracle();
+		
+		for(ScoreDTO dto : list) {
+			System.out.println(dto + "\t" + dto.getTot() + "\t" + df.format(dto.getAve()) + "\t" + dto.getGrade());
+		}
+	}
+	
+	public void updateView() {
+		System.out.print("수정할 학번 입력: ");
+	    int idx = scanner.nextInt();
+	    
+	    ScoreDTO dto = getCondition(idx);
+	    
+	    if(dto == null) {
+	        System.out.println("존재하지 않는 학번입니다.");
+	        return;
+	    }
+	    System.out.println(dto);
+	    
+	    System.out.print("[1]이름 [2]국어 [3]영어 [4]수학 : ");
+	    int subMenu = scanner.nextInt();
+	    
+	    if(subMenu == 1) {
+	        System.out.print("새 이름: ");
+	        dto.setName(scanner.next());
+	    } else if(subMenu == 2) {
+	        System.out.print("새 국어점수: ");
+	        dto.setKor(scanner.nextInt()); 
+	    } else if(subMenu == 3) {
+	        System.out.print("새 영어 점수: ");
+	        dto.setKor(scanner.nextInt()); 
+	    } else if(subMenu == 4) {
+	        System.out.print("새 수학 점수: ");
+	        dto.setKor(scanner.nextInt()); 
+	    } else {
+			System.out.println("잘못 된 입력");
+			return;
+		}
+	    
+	    getUpdate(dto);
+	    System.out.println("수정 완료!");
+
+	}
+	
+	public void deleteView() {
+		System.out.print("삭제하실 학번 : ");
+		int idx = scanner.nextInt();
+		ScoreDTO dto = getCondition(idx);
+	    
+	    if(dto == null) {
+	        System.out.println("존재하지 않는 학번입니다.");
+	        return;
+	    }
+	    
+		getDelete(idx);
+		
+		System.out.println(idx + "번 삭제 성공!");
+	}
 	
 	public void setInsert(ScoreDTO dto) {
 		Connection conn = null; //db접속 정보 저장 객체 
