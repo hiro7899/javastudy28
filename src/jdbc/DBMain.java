@@ -1,5 +1,6 @@
 package jdbc;
 
+import java.text.DecimalFormat;
 import java.util.List;
 import java.util.Scanner;
 
@@ -14,7 +15,7 @@ public class DBMain {
 		ScoreDAO dao = new ScoreDAO();
 		
 		while(flag) {
-			System.out.print("[1]입력[2]출력[3]전체 출력[4]국어점수 최대값[5]수정[6]삭제[0]종료 : ");
+			System.out.print("[1]입력[2]출력[3]전체 출력[4]국어점수 최대값[5]오라클 총점 평균 학점출력[6]수정[7]삭제[0]종료 : ");
 			int menu = scanner.nextInt();
 			
 			if(menu == 1) {
@@ -92,7 +93,18 @@ public class DBMain {
 	            dto = dao.setAverage();
 	            System.out.println("전체평균 : "+dto.getAkor()+", "+dto.getAeng()+", "+dto.getAmat());
 				
-			}else if(menu == 5) {
+			}else if(menu == 5){
+				System.out.println("전체 인원수 : " + dao.getCount());
+				System.out.println("========전체출력=========");
+				System.out.println("학번\t이름\t국어\t영어\t수학\t총점\t평균\t학점");
+				DecimalFormat df = new DecimalFormat("#.00");
+				List<ScoreDTO> list = dao.getOracle();
+				
+				for(ScoreDTO dto : list) {
+					System.out.println(dto + "\t" + dto.getTot() + "\t" + df.format(dto.getAve()) + "\t" + dto.getGrade());
+				}
+				
+			}else if(menu == 6) {
 				System.out.print("수정할 학번 입력: ");
 			    int idx = scanner.nextInt();
 			    
@@ -102,6 +114,7 @@ public class DBMain {
 			        System.out.println("존재하지 않는 학번입니다.");
 			        continue;
 			    }
+			    System.out.println(dto);
 			    
 			    System.out.print("[1]이름 [2]국어 [3]영어 [4]수학 : ");
 			    int subMenu = scanner.nextInt();
@@ -126,10 +139,16 @@ public class DBMain {
 			    dao.getUpdate(dto);
 			    System.out.println("수정 완료!");
 				
-			}else if(menu == 6) {
+			}else if(menu == 7) {
 				System.out.print("삭제하실 학번 : ");
 				int idx = scanner.nextInt();
-				
+				ScoreDTO dto = dao.getCondition(idx);
+			    
+			    if(dto == null) {
+			        System.out.println("존재하지 않는 학번입니다.");
+			        continue;
+			    }
+			    
 				dao.getDelete(idx);
 				
 				System.out.println(idx + "번 삭제 성공!");

@@ -10,6 +10,10 @@ public class ScoreDTO {
 	private int eng;
 	private int mat;
 	
+	private int tot;
+	private double ave;
+	private String grade;
+	
 	private int tkor;
 	private int teng;
 	private int tmat;
@@ -58,6 +62,30 @@ public class ScoreDTO {
 		this.mat = mat;
 	}
 	
+	public int getTot() {
+		return tot;
+	}
+
+	public void setTot(int tot) {
+		this.tot = tot;
+	}
+
+	public double getAve() {
+		return ave;
+	}
+
+	public void setAve(double ave) {
+		this.ave = ave;
+	}
+
+	public String getGrade() {
+		return grade;
+	}
+
+	public void setGrade(String grade) {
+		this.grade = grade;
+	}
+
 	public int getTkor() {
 		return tkor;
 	}
@@ -81,12 +109,12 @@ public class ScoreDTO {
 	public void setTmat(int tmat) {
 		this.tmat = tmat;
 	}
-	
+
 	public double getAkor() {
 		return akor;
 	}
 
-	public void setAkor(int akor) {
+	public void setAkor(double akor) {
 		this.akor = akor;
 	}
 
@@ -94,7 +122,7 @@ public class ScoreDTO {
 		return aeng;
 	}
 
-	public void setAeng(int aeng) {
+	public void setAeng(double aeng) {
 		this.aeng = aeng;
 	}
 
@@ -102,7 +130,7 @@ public class ScoreDTO {
 		return amat;
 	}
 
-	public void setAmat(int amat) {
+	public void setAmat(double amat) {
 		this.amat = amat;
 	}
 

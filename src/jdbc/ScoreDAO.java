@@ -128,6 +128,52 @@ public class ScoreDAO {
 		return count;
 	}
 	
+	public List<ScoreDTO> getOracle(){
+		List<ScoreDTO> list = new ArrayList<ScoreDTO>();
+		
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		String sql = """
+			    SELECT idx, name, kor, eng, mat, 
+			           (kor + eng + mat) AS total, 
+			           (kor + eng + mat)/3 AS average,
+			           CASE WHEN (kor + eng + mat) / 3 >= 90 THEN 'A'
+			                WHEN (kor + eng + mat) / 3 >= 80 THEN 'B'
+			                WHEN (kor + eng + mat) / 3 >= 70 THEN 'C'
+			                ELSE 'F'
+			           END AS grade
+			    FROM score
+			    """; //텍스트 블록 """ 개행 문자 뒤에 바로 문자열이 오면 컴파일 에러가 나므로 줄바꿈 필수!!
+		
+		try {
+			conn = DBmanager.getInstance();
+			pstmt = conn.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				ScoreDTO dto = new ScoreDTO();
+				dto.setIdx(rs.getInt("idx"));
+				dto.setName(rs.getString("name"));
+				dto.setKor(rs.getInt("kor"));
+				dto.setEng(rs.getInt("eng"));
+				dto.setMat(rs.getInt("mat"));
+				dto.setTot(rs.getInt("total"));
+				dto.setAve(rs.getDouble("average"));
+				dto.setGrade(rs.getString("grade"));
+				
+				list.add(dto);
+			}
+			
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return list;
+	}
+	
 	public List<ScoreDTO> getMaxKor() {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
