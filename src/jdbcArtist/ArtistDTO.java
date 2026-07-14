@@ -9,6 +9,14 @@ public class ArtistDTO {
 	private String talent;
 	private String agency;
 	
+	private int serialNo;
+	private int point;
+	private String grade;
+	private String mentoName;
+	
+	private int tpoint;
+	private double apoint;
+	
 	public String getArtistId() {
 		return artistId;
 	}
@@ -56,11 +64,70 @@ public class ArtistDTO {
 		this.agency = agency;
 	}
 	
-	@Override
-	public String toString() {
-		
-		
-		return artistId + "\t" + artistName + "\t" + artistGender + "\t" + artistBirth + "\t" + talent + "\t" + agency;
+	public int getSerialNo() {
+		return serialNo;
+	}
+
+	public void setSerialNo(int serialNo) {
+		this.serialNo = serialNo;
+	}
+
+	public int getPoint() {
+		return point;
+	}
+
+	public void setPoint(int point) {
+		this.point = point;
+	}
+
+	public String getGrade() {
+		return grade;
+	}
+
+	public void setGrade(String grade) {
+		this.grade = grade;
+	}
+
+	public String getMentoName() {
+		return mentoName;
+	}
+
+	public void setMentoName(String mentoName) {
+		this.mentoName = mentoName;
 	}
 	
+	public int getTpoint() {
+		return tpoint;
+	}
+
+	public void setTpoint(int tpoint) {
+		this.tpoint = tpoint;
+	}
+
+	public double getApoint() {
+		return apoint;
+	}
+
+	public void setApoint(double apoint) {
+		this.apoint = apoint;
+	}
+
+	@Override
+	public String toString() {
+		// 성별 변환
+	    String genderStr = artistGender.equals("M") ? "남성" : "여성";
+	    
+	    // 특기 변환
+	    String talentStr;
+	    if(talent.equals("1")) talentStr = "댄스";
+	    else if(talent.equals("2")) talentStr = "랩";
+	    else talentStr = "노래";
+	    
+	    // 생년월일 변환
+	    String year = artistBirth.substring(0, 4) + "년";
+	    String month = artistBirth.substring(4, 6) + "월";
+	    String day = artistBirth.substring(6, 8) + "일";
+	    
+	    return artistId + "\t" + artistName + "\t" + genderStr + "\t" + year + month + day + "\t" + talentStr + "\t" + agency;
+	}
 }

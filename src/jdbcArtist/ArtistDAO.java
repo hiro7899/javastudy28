@@ -39,28 +39,6 @@ public class ArtistDAO {
 		}
 	}
 	
-	public void formatSelect(ArtistDTO dto) {
-		if(dto.getArtistGender().equals("M")) {
-			dto.setArtistGender("남자");
-		}else {
-			dto.setArtistGender("여자");
-		}
-		
-		if(dto.getTalent().equals("1")) {
-			dto.setTalent("댄스");
-		}else if (dto.getTalent().equals("2")) {
-			dto.setTalent("랩");
-		}else {
-			dto.setTalent("노래");
-		}
-		
-		String year = dto.getArtistBirth().substring(0, 4) + "년";
-		String month = dto.getArtistBirth().substring(4, 6) + "월";
-		String day = dto.getArtistBirth().substring(6, 8) + "일";
-		
-		dto.setArtistBirth(year + month + day);
-	}
-	
 	public List<ArtistDTO> select(){
 		Connection conn = null;
 		PreparedStatement pstmt = null;
@@ -98,95 +76,92 @@ public class ArtistDAO {
 		return list;
 	}
 	
-	public ArtistDTO selectOne() {
+	public List<ArtistDTO> selectMentoPoint() {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		
-		ArtistDTO dto = null;
-
 		String sql = """
-				SELECT * FROM tbl_artist 
-				WHERE artist_id = ?
+				SELECT p.serial_no, a.artist_id, a.artist_name, a.artist_birth, p.point,
+			    CASE WHEN p.point >= 90 THEN 'A'
+			        WHEN p.point >= 80 THEN 'B'
+			        WHEN p.point >= 70 THEN 'C'
+			        ELSE 'F'
+			    END AS grade,
+				m.mento_name
+				FROM tbl_artist a, tbl_mento m, tbl_point p
+				WHERE a.artist_id = p.artist_id 
+				    AND m.mento_id = p.mento_id
+				ORDER BY p.serial_no
 				""";
+		
+		List<ArtistDTO> list = new ArrayList<ArtistDTO>();
 		
 		try {
 			conn = DBmanager.getInstance();
 			pstmt = conn.prepareStatement(sql);
 			rs = pstmt.executeQuery();
 			
-			if(rs.next()) {
-				dto = new ArtistDTO();
+			while(rs.next()) {
+				ArtistDTO dto = new ArtistDTO();
 				
+				dto.setSerialNo(rs.getInt("serial_no"));
 				dto.setArtistId(rs.getString("artist_id"));
 				dto.setArtistName(rs.getString("artist_name"));
-				dto.setArtistGender(rs.getString("artist_gender"));
 				dto.setArtistBirth(rs.getString("artist_birth"));
-				dto.setTalent(rs.getString("talent"));
-				dto.setAgency(rs.getString("agency"));
-			}else {
-				System.out.println("번호가 존재하지 않습니다");
+				dto.setPoint(rs.getInt("point"));
+				dto.setGrade(rs.getString("grade"));
+				dto.setMentoName(rs.getString("mento_name"));
+				
+				list.add(dto);
 			}
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
 			DBmanager.close(rs, pstmt, conn);
 		}
-		return dto;
+		return list;
 	}
 	
-	public void update(ArtistDTO dto) {
+	public List<ArtistDTO> selectRank() {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
+		ResultSet rs = null;
 		
 		String sql = """
-				UPDATE tbl_artist 
-				SET artist_name = ?, artist_gender = ?, artist_birth = ?, talent = ?, agency = ? 
-				WHERE artist_id = ?
+				SELECT a.artist_id, a.artist_name, a.artist_gender, sum(p.point) as tpoint, avg(p.point) apoint 
+				FROM tbl_artist a, tbl_point p 
+				WHERE a.artist_id = p.artist_id 
+				GROUP BY a.artist_id, a.artist_name, a.artist_gender 
+				ORDER BY tpoint DESC
 				""";
+		
+		List<ArtistDTO> list = new ArrayList<ArtistDTO>();
 		
 		try {
 			conn = DBmanager.getInstance();
 			pstmt = conn.prepareStatement(sql);
+			rs = pstmt.executeQuery();
 			
-			pstmt.setString(1, dto.getArtistName());
-			pstmt.setString(2, dto.getArtistGender());
-			pstmt.setString(3, dto.getArtistBirth());
-			pstmt.setString(4, dto.getTalent());
-			pstmt.setString(5, dto.getAgency());
-			pstmt.setString(6, dto.getArtistId());
-			
-			pstmt.executeUpdate();
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			DBmanager.close(pstmt, conn);
-		}
-	}
-	
-	public void delete(int idx) {
-		Connection conn = null;
-		PreparedStatement pstmt = null;
-		
-		String sql = """
-				DELETE FROM tbl_artist 
-				WHERE artist_id = ?
-				""";
-		
-		try {
-			conn = DBmanager.getInstance();
-			pstmt = conn.prepareStatement(sql);
-			
-			pstmt.setInt(1, idx);
-			
-			pstmt.executeUpdate();
+			while(rs.next()) {
+				ArtistDTO dto = new ArtistDTO();
+				
+				dto.setArtistId(rs.getString("artist_id"));
+				dto.setArtistName(rs.getString("artist_name"));
+				dto.setArtistGender(rs.getString("artist_gender"));
+				dto.setTpoint(rs.getInt("tpoint"));
+				dto.setApoint(rs.getDouble("apoint"));
+				
+				list.add(dto);
+			}
 			
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			DBmanager.close(pstmt, conn);
+			DBmanager.close(rs, pstmt, conn);
 		}
+		return list;
 	}
-	
+
 }

@@ -1,5 +1,6 @@
 package jdbcArtist;
 
+import java.text.DecimalFormat;
 import java.util.List;
 import java.util.Scanner;
 
@@ -14,7 +15,7 @@ public class ArtistMain {
 		boolean flag = true;
 		
 		while(flag) {
-			System.out.print("[1]등록[2]출력[0]종료 : ");
+			System.out.print("[1]등록[2]참가자목록[3]멘토점수목록[4]참가자등수조회[0]종료 : ");
 			int menu = scanner.nextInt();
 			
 			if(menu == 1) {
@@ -52,15 +53,48 @@ public class ArtistMain {
 				List<ArtistDTO> artists = dao.select();
 				
 				for(ArtistDTO artist : artists) {
-					dao.formatSelect(artist);
 					System.out.println(artist);
+				}
+				
+			}else if(menu == 3) {
+				System.out.println("채점번호\t참가번호\t참가자명\t생년월일\t\t점수\t평점\t멘토");
+				List<ArtistDTO> artists = dao.selectMentoPoint();
+				
+				for(ArtistDTO artist : artists) {
+					System.out.print(artist.getSerialNo() + "\t");
+					System.out.print(artist.getArtistId() + "\t");
+					System.out.print(artist.getArtistName() + "\t");
+					System.out.print(artist.getArtistBirth().substring(0, 4) + "년" 
+							+ artist.getArtistBirth().substring(4, 6) + "월" 
+							+ artist.getArtistBirth().substring(6, 8) + "일\t");
+					System.out.print(artist.getPoint() + "\t");
+					System.out.print(artist.getGrade() + "\t");
+					System.out.println(artist.getMentoName());
+				}
+				
+			}else if(menu == 4) {
+				DecimalFormat df = new DecimalFormat("#.00");
+				
+				System.out.println("참가번호\t참가자명\t성별\t총점\t평균\t등수");
+				
+				List<ArtistDTO> artists = dao.selectRank();
+				
+				int rank = 1;
+				for(ArtistDTO artist : artists) {
+					System.out.print(artist.getArtistId() + "\t");
+					System.out.print(artist.getArtistName() + "\t");
+					System.out.print((artist.getArtistGender().equals("M") ? "남성" : "여성") + "\t");
+					System.out.print(artist.getTpoint() + "\t");
+					System.out.print(df.format(artist.getApoint()) + "\t");
+					System.out.println(rank);
+					rank++;
 				}
 				
 			}else if(menu == 0) {
 				flag = false;
 						
 			}else {
-				
+				System.out.println("잘못된 입력 : " + menu);
 			}
 		}
 		scanner.close();
