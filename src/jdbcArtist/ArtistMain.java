@@ -11,11 +11,12 @@ public class ArtistMain {
 		Scanner scanner = new Scanner(System.in);
 		
 		ArtistDAO dao = new ArtistDAO();
+		EmpDAO eDao = new EmpDAO();
 		
 		boolean flag = true;
 		
 		while(flag) {
-			System.out.print("[1]등록[2]참가자목록[3]멘토점수목록[4]참가자등수조회[0]종료 : ");
+			System.out.print("[1]등록[2]참가자목록[3]멘토점수목록[4]참가자등수조회[5]OUTER JOIN[0]종료 : ");
 			int menu = scanner.nextInt();
 			
 			if(menu == 1) {
@@ -88,6 +89,15 @@ public class ArtistMain {
 					System.out.print(df.format(artist.getApoint()) + "\t");
 					System.out.println(rank);
 					rank++;
+				}
+				
+			}else if(menu == 5) { 
+				System.out.println("직원이름\t부서명");
+				List<EmpDTO> emps = eDao.empPrint();
+				
+				for(EmpDTO emp : emps) {
+					System.out.print(emp.getEmpName() + "\t");
+					System.out.println((emp.getDeptName() == null ? " " : emp.getDeptName()));
 				}
 				
 			}else if(menu == 0) {
