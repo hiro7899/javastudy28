@@ -1,4 +1,4 @@
-package jdbcScore;
+package jdbc.score;
 
 public class ScoreDTO {
 

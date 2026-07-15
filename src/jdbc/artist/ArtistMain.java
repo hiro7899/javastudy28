@@ -1,4 +1,4 @@
-package jdbcArtist;
+package jdbc.artist;
 
 import java.text.DecimalFormat;
 import java.util.List;

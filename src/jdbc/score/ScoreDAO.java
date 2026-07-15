@@ -1,4 +1,4 @@
-package jdbcScore;
+package jdbc.score;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

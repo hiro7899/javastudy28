@@ -1,4 +1,4 @@
-package jdbcArtist;
+package jdbc.artist;
 
 public class ArtistDTO {
 

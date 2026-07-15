@@ -1,4 +1,4 @@
-package jdbcArtist;
+package jdbc.artist;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
