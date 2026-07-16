@@ -22,7 +22,7 @@ public class OilMain {
 				int menu = scanner.nextInt();
 				
 				if(menu == 1) {
-					System.out.println("매출번호\t주유일자\t유종\t주유량\t결제방법\t회원성명\t회원번호\t전화번호\t카드번호\t\t금액");
+					System.out.println("매출번호\t주유일자\t\t유종\t\t주유량\t결제방법\t회원성명\t회원번호\t전화번호\t\t카드번호\t\t\t금액");
 					
 					List<OilDTO> list = dao.selectOilSale();
 					
@@ -33,9 +33,9 @@ public class OilMain {
 						System.out.print(dto.getOildate().substring(0, 4) + "년" 
 								+ dto.getOildate().substring(4, 6) + "월" 
 								+ dto.getOildate().substring(6, 8) + "일\t");
-						System.out.print(dto.getOilname() + "\t");
+						System.out.print(dto.getOilname() + "\t\t");
 						System.out.print(dto.getAmount() + "\t");
-						System.out.print(dto.getPaytype() + "\t");
+						System.out.print((dto.getPaytype().equals("1") ? "현금" : "카드" ) + "\t");
 						System.out.print((dto.getCustname() != null ? dto.getCustname() : "비회원") + "\t");
 						System.out.print((dto.getCustno() != null ? dto.getCustno() : "비회원") + "\t");
 						System.out.print(((dto.getCusttel1() != null && dto.getCusttel2() != null && dto.getCusttel3() != null)
@@ -50,7 +50,7 @@ public class OilMain {
 					
 					
 				}else if(menu == 2) {
-					System.out.println("주유일자\t유종\t건수\t금액");
+					System.out.println("주유일자\t\t유종\t\t건수\t금액");
 					
 					List<OilDTO> list = dao.selectDayTotal();
 					
@@ -58,7 +58,7 @@ public class OilMain {
 						System.out.print(dto.getOildate().substring(0, 4) + "년" 
 								+ dto.getOildate().substring(4, 6) + "월" 
 								+ dto.getOildate().substring(6, 8) + "일\t");
-						System.out.print(dto.getOilname() + "\t");
+						System.out.print(dto.getOilname() + "\t\t");
 						System.out.print(dto.getCount() + "건\t");
 						System.out.println(df.format(dto.getTcost()));
 					}
