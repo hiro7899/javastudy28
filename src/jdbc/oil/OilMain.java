@@ -1,4 +1,4 @@
-package jdbc.oilamount;
+package jdbc.oil;
 
 import java.sql.Connection;
 import java.text.DecimalFormat;

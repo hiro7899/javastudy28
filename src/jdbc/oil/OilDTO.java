@@ -1,4 +1,4 @@
-package jdbc.oilamount;
+package jdbc.oil;
 
 public class OilDTO {
 	
