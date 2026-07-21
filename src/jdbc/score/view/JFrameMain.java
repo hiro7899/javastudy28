@@ -7,6 +7,4 @@ public class JFrameMain {
 		new MainFrame();
 
 	}
-
-	
 }

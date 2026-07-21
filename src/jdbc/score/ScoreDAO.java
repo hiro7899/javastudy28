@@ -162,10 +162,10 @@ public class ScoreDAO {
 		System.out.println(idx + "번 삭제 성공!");
 	}
 	
-	public void setInsert(ScoreDTO dto) {
+	public boolean setInsert(ScoreDTO dto) {
 		Connection conn = null; //db접속 정보 저장 객체 
 		PreparedStatement pstmt = null; //sql
-		
+		boolean flag = false;
 		String sql = "INSERT INTO score (idx, name, kor, eng, mat) VALUES (?, ?, ?, ?, ?)";
 		
 		try {
@@ -179,8 +179,10 @@ public class ScoreDAO {
 			pstmt.setInt(4, dto.getEng());
 			pstmt.setInt(5, dto.getMat());
 			
-			pstmt.executeUpdate(); //sql 실행	
-			
+			int result = pstmt.executeUpdate(); //sql 실행	
+			if(result > 0) {
+				flag = true;
+			}
 		} catch (Exception e) {
 //			e.printStackTrace();
 			System.out.println("이미 존재하는 학번입니다.");
@@ -188,7 +190,7 @@ public class ScoreDAO {
 			if (pstmt != null) try { pstmt.close(); } catch (Exception e) { e.printStackTrace(); }
 	        if (conn != null) try { conn.close(); } catch (Exception e) { e.printStackTrace(); }
 		}
-		
+		return flag;
 	}
 	
 	public int countIdx() {
@@ -460,9 +462,10 @@ public class ScoreDAO {
 		return dto;
 	}
 	
-	public void getUpdate(ScoreDTO dto) {
+	public boolean getUpdate(ScoreDTO dto) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
+		boolean flag = false;
 		
 		String sql = "UPDATE score SET kor = ?, eng = ?, mat = ? WHERE idx = ?";
 		
@@ -475,7 +478,10 @@ public class ScoreDAO {
 			pstmt.setInt(3, dto.getMat());
 			pstmt.setInt(4, dto.getIdx());
 			
-			pstmt.executeUpdate();
+			int result = pstmt.executeUpdate();
+			if(result > 0) {
+				flag = true;
+			}
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -483,7 +489,7 @@ public class ScoreDAO {
 			if (pstmt != null) try { pstmt.close(); } catch (Exception e) { e.printStackTrace(); }
 	        if (conn != null) try { conn.close(); } catch (Exception e) { e.printStackTrace(); }
 		}
-		
+		return flag;
 	}
 	
 	public void getDelete(int idx) {
