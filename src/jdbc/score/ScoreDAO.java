@@ -492,9 +492,10 @@ public class ScoreDAO {
 		return flag;
 	}
 	
-	public void getDelete(int idx) {
+	public boolean getDelete(int idx) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
+		boolean flag = false;
 		
 		String sql = "DELETE FROM score WHERE idx = ?";
 		
@@ -504,7 +505,11 @@ public class ScoreDAO {
 			
 			pstmt.setInt(1, idx);
 			
-			pstmt.executeUpdate();
+			int result = pstmt.executeUpdate();
+			
+			if(result > 0) {
+				flag = true;
+			}
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -512,7 +517,7 @@ public class ScoreDAO {
 			if (pstmt != null) try { pstmt.close(); } catch (Exception e) { e.printStackTrace(); }
 	        if (conn != null) try { conn.close(); } catch (Exception e) { e.printStackTrace(); }
 		}
-		
+		return flag;
 	}
 	
 }

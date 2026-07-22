@@ -50,7 +50,7 @@ public class MainFrame extends JFrame {
 
 	private void initUI() {
 		setTitle("성적관리 프로그램");
-		setSize(700, 500);
+		setSize(1000, 700);
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		createPanel();
@@ -177,6 +177,35 @@ public class MainFrame extends JFrame {
 				} else {
 					JOptionPane.showMessageDialog(null, "수정실패");
 				}
+			}
+		});
+		
+		btnDelete.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				int idx = Integer.parseInt(tfIdx.getText());
+				
+				int answer = JOptionPane.showConfirmDialog(
+						MainFrame.this, 
+						"정말 삭제하시겠습니까?",
+						"삭제 확인",
+						JOptionPane.YES_NO_OPTION
+						); //yes 는 0, no 는 1 리턴
+				
+				if(answer == JOptionPane.YES_OPTION) {
+					boolean result = dao.getDelete(idx);
+					if (result) {
+						JOptionPane.showMessageDialog(null, "삭제되었습니다");
+						clarInput();
+						loadTable();
+					} else {
+						JOptionPane.showMessageDialog(null, "삭제실패");
+					}
+				}else {
+					JOptionPane.showMessageDialog(null, "취소되었습니다");
+				}
+				
 			}
 		});
 	}
